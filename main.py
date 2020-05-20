@@ -1,49 +1,65 @@
 #! /usr/bin/env python3
 """Request data from OpenFoodFact and parse the result."""
+from pprint import pprint
 import json
 
 import requests
 
+# stores / unique_scans_n / url / product_name / nutriscore_grade / categories
 
-class downloader:
+class Downloader:
+    """Will download products from OpenFoodFacts"""
+
     def __init__(self):
+        """[summary]"""
         self.url = "https://fr.openfoodfacts.org/cgi/search.pl"
-        self.number_products = 1000
         self.params = {
             "action": "process",
             "sort_by": "unique_scans_n",
-            "page_size": 500,
+            "page_size": 40, 
             "json": 1,
-            "page": 1,
+            "page": 5,
         }
-        self.response = requests.get(self.url, params=self.params)
-        self.data = self.response.json()
+        
 
-    def display_products(self):
+    def get_product(self):
         """Display product based on specifics params."""
+        response = requests.get(self.url, params=self.params)
+        data = response.json()
+        products = data["products"]
+        products_list = []
+        pprint(products_list)
+        
+        for product in products:
+            #code_product = product["unique_scans_n"]
+            name_product = product["product_name"]
+            # url_product = product["url"]
+            # nutriscore_product = product["nutriscore_grade"]
+            # store = product["url"]
+            #pprint(f" {store}")
+            products_list.append(name_product)
+            
+        pprint(products_list)
+        cleaned = [x.lower().capitalize() for x in products_list]
+        pprint(cleaned)
 
-        product = self.data["products"]
-        id_product = 0
-        for field in range(self.number_products):
-            products_list = product[id_product]
-            code_product = products_list["code"]
-            name_product = products_list["product_name_fr"]
-            url_product = products_list["url"]
-            nutriscore_product = products_list["nutriscore_score"]
-            print(
-                f"Code {code_product} - {name_product} {url_product} - Nutriscore {nutriscore_product}"
-            )
-            id_product += 1
+class DataCleaner:
 
-    def save_data(self):
-        """Save data to work offline."""
+    def is_valid(self, product):
+        pass 
 
-        with open("data.json", "w+") as f:
-            print("Sauvegarde des données..")
-            json.dump(self.data, f, indent=3)
-            print("Sauvegarde terminée...")
+    def clean(self, products):
+        clean_products = []
+        if products[7]["origins"]  :
+            print(True)
+            clean_products.append(data)
+        else:
+            print(False)
+        return products
 
 
-download = downloader()
-download.read_data()
-print(download.read_data.files)
+download = Downloader()
+products = download.get_product()
+
+
+
