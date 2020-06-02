@@ -1,65 +1,71 @@
-#! /usr/bin/env python3
+
 """Request data from OpenFoodFact and parse the result."""
 from pprint import pprint
-import json
+from collections import defaultdict
 
 import requests
 
-# stores / unique_scans_n / url / product_name / nutriscore_grade / categories
 
 class Downloader:
-    """Will download products from OpenFoodFacts"""
+    """Will download products from OpenFoodFacts/API"""
 
     def __init__(self):
-        """[summary]"""
+        """Url : Takes the url from which the date is received
+        Params : Takes parametres to filter the query"""
         self.url = "https://fr.openfoodfacts.org/cgi/search.pl"
         self.params = {
             "action": "process",
             "sort_by": "unique_scans_n",
-            "page_size": 40, 
+            "page_size": None,
             "json": 1,
-            "page": 5,
+            "page": 1,
+            "fields": "nutriscore_grade,product_name,url,code,categories,stores"
         }
-        
 
-    def get_product(self):
-        """Display product based on specifics params."""
-        response = requests.get(self.url, params=self.params)
-        data = response.json()
-        products = data["products"]
-        products_list = []
-        pprint(products_list)
-        
-        for product in products:
-            #code_product = product["unique_scans_n"]
-            name_product = product["product_name"]
-            # url_product = product["url"]
-            # nutriscore_product = product["nutriscore_grade"]
-            # store = product["url"]
-            #pprint(f" {store}")
-            products_list.append(name_product)
-            
-        pprint(products_list)
-        cleaned = [x.lower().capitalize() for x in products_list]
-        pprint(cleaned)
-
-class DataCleaner:
-
-    def is_valid(self, product):
-        pass 
-
-    def clean(self, products):
-        clean_products = []
-        if products[7]["origins"]  :
-            print(True)
-            clean_products.append(data)
-        else:
-            print(False)
+    def get_product(self, page_size=20):
+        """Display product based on specifics parameters."""
+        params = self.params.copy()
+        params["page_size"] = page_size
+        products = []
+        try:
+            response = requests.get(self.url, params=params, timeout=2)
+            data = response.json()
+        except requests.exceptions.ReadTimeout:
+            print("Error when fetching the API")
+        if response.status_code == 200:
+            products.extend(response.json()["products"])
         return products
+        
+        
+# Etape : Retourner une liste dic dans ma product / Dataclean pour constuire liste / filtrer et eliminer et formatter 
+class DataCleaner:
+    """Will clean the data received from the API"""
 
+    def is_valid(self, product): 
+        if product.get("nutriscore_grade") and product.get("product_name") and product.get("url") and product.get("code") and product.get("categories") and product.get("stores"): 
+            return True
+  
+    def clean(self, products): #boucle for et appeler is valid
+        clean_products = []
+        clean_stores = set()
+        clean_categories = set()
+        for product in products:
+            if self.is_valid(product):
+                product["categories"] = [
+                cat.strip().lower().capitalize() 
+                for cat in product["categories"].split(",")
+                ]
+                product["stores"] = [
+                store.strip().lower().capitalize() 
+                for store in product["stores"].split(",")
+                ]
+                clean_products.append(product)
+                clean_stores |= set(product["stores"])
+                clean_categories |= set(product["categories"])
+        return clean_categories
 
-download = Downloader()
-products = download.get_product()
-
-
-
+if __name__ == "__main__":
+    download = Downloader()
+    cleaner = DataCleaner()
+    products = download.get_product(50)
+    pprint(cleaner.clean(products))

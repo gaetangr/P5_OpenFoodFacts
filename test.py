@@ -1,44 +1,13 @@
-store = ['Les grillettines au blé complet',
- 'Pain AMS complet',
- 'GrandLait - Demi-écrémé',
- 'Noir Extra',
- 'Confiture Allégée Fraises',
- 'Biscuits Soja Figue',
- 'Mélange de fruits secs',
- 'La Bûche fondante',
- 'Fraise Intense',
- 'Special K feuilles de Chocolat Noir (Format Maxi)',
- 'Miel Pops',
- "Granola L'Original Gros Éclats de Chocolat",
- 'Tartines de Pain Blé Complet ×24 Tranches',
- 'Fitness nature',
- 'Pains au chocolat',
- 'Tomato ketchup',
- 'Pepsi max zero',
- "Le supérieur cuit à l'étouffée -25%  sel* - 4 tranches",
- 'Goûter aux écorces  confites',
- 'belvita',
- 'Monaco',
- 'Planta Fin Doux (60 % MG) Tartine & Cuisson',
- "Crousti'Son Miel Sésame",
- 'Coca Zéro',
- 'Biscottes Équilibre',
- 'Pomme pur fruit pressé',
- 'Oméga 3',
- 'Eau minérale gazeuse',
- 'Ketchup allegé',
- "Pim's orange",
- 'Tropical',
- 'Margarine tartine doux',
- 'BelVita Petit Déjeuner Oririnal -30 % de sucres',
- 'LE PUR JUS Orange sans pulpe',
- 'Pastis de Marseille',
- 'Fitness Chocolat Noir',
- 'Véritable Petit Beurre',
- 'Fitness Chocolat Au Lait',
- "Pom'Potes (Pomme)",
- 'Gaufres Miel']
+class DataCleaner:
+    """Will clean the data received from the API"""
 
+    def is_valid(self, product): 
+        if product.get("nutriscore_grade") and product.get("product_name") and product.get("url") and product.get("code") and product.get("categories") and product.get("stores"): 
+            return True
+  
+    def clean(self, products): #boucle for et appeler is valid
+        clean_products = [2]
+   
 
-upp = [x.lower().capitalize() for x in store]
-print(upp)
+classe = DataCleaner()
+classe.clean_products
