@@ -52,7 +52,7 @@ class DataCleaner:
         ):
             return True
 
-    def clean(self, products):  # boucle for et appeler is valid
+    def clean(self, products):
         clean_products = []
         clean_stores = set()
         clean_categories = set()
