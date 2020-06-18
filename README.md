@@ -4,6 +4,15 @@
 Project that request data from the OpenFoodFact API, parse and store into a database 
 for further use.
 
+## Summary
+
+[Getting started](#getting-started)
+[Installing](#installing)
+[Prerequisites](#prerequisites)
+[Coding style and tools for formating](#coding-style-and-tools-for-formating)
+[Built with](#built-with)
+[Authors](#authors)
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
@@ -70,4 +79,3 @@ flake8
 
 * **Gaëtan GROND** - *Initial work* - [Mcflan-GR]([https://github.com/Mcflan-7](https://github.com/Mcflan-7))
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
