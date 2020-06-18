@@ -4,6 +4,7 @@ from cleaner import cleaner
 
 
 class StoreManager:
+    """Store the data from the api in a MySQL database."""
     pass
 
     def save(self, stores):
@@ -14,6 +15,7 @@ class StoreManager:
 
 
 class CategoryManager:
+    """Store the data from the api in a MySQL database."""
     pass
 
     def save(self):
@@ -21,6 +23,7 @@ class CategoryManager:
 
 
 class ProductManager:
+    """Store the data from the api in a MySQL database."""
     pass
 
     def save(self):

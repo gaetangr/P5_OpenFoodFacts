@@ -20,6 +20,7 @@ class DataCleaner:
             return True
 
     def clean(self, products):
+        """Parse and normalize data from the API."""
         clean_products = []
         clean_stores = set()
         clean_categories = set()
