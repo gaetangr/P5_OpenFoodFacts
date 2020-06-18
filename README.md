@@ -4,14 +4,15 @@
 Project that request data from the OpenFoodFact API, parse and store into a database 
 for further use.
 
-## Summary
+## Summary 
 
-[Getting started](#getting-started)
-[Installing](#installing)
-[Prerequisites](#prerequisites)
-[Coding style and tools for formating](#coding-style-and-tools-for-formating)
-[Built with](#built-with)
-[Authors](#authors)
+- [Getting started](#getting-started)
+- [Installing](#installing)
+- [Prerequisites](#prerequisites)
+- [Coding style and tools for formating](#coding-style-and-tools-for-formating)
+- [Built with](#built-with)
+- [Authors](#authors)
+
 
 ## Getting Started
 
