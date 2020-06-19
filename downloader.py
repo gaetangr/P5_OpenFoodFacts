@@ -25,8 +25,8 @@ class Downloader:
         params["page_size"] = page_size
         products = []
         try:
-            response = requests.get(self.url, params=params, timeout=2)
-            data = response.json()
+            response = requests.get(self.url, params=params, timeout=3)
+            response.json()
         except requests.ConnectionError:
             print("Error when fetching the API")
         for i in range(pages_number):

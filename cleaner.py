@@ -6,7 +6,7 @@ from downloader import Downloader
 
 
 class DataCleaner:
-    """Will clean the data received from the API."""
+    """Clean the data received from the API."""
 
     def is_valid(self, product):
         if (
@@ -38,10 +38,3 @@ class DataCleaner:
                 clean_stores |= set(product["stores"])
                 clean_categories |= set(product["categories"])
         return clean_stores
-
-
-if __name__ == "__main__":
-    download = Downloader()
-    cleaner = DataCleaner()
-    products = download.get_product(1, 10)
-    pprint(products)
