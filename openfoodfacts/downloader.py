@@ -4,7 +4,7 @@ import requests
 
 
 class Downloader:
-    """Will download products from OpenFoodFacts/API."""
+    """Download products from OpenFoodFacts/API."""
 
     def __init__(self):
         """Url : Takes the url from which the date is received

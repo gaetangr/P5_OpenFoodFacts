@@ -2,9 +2,6 @@
 
 from pprint import pprint
 
-from downloader import Downloader
-
-
 class DataCleaner:
     """Clean the data received from the API."""
 

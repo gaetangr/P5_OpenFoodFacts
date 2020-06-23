@@ -1,14 +1,19 @@
 """Create from openfoofacts."""
 
-from pprint import pprint
-from downloader import Downloader
-from cleaner import DataCleaner
-
 from sqlalchemy.orm import sessionmaker
+
+from .cleaner import DataCleaner
+from .downloader import Downloader
+from .models import Category, Product, Store
+from openfoodfacts import engine
+
+
+Session = sessionmaker(bind=engine)
+session = Session()
 
 class StoreManager:
     """Store the data from the api in a MySQL database."""
-    
+
     def save(self, stores):
         for store_name in stores:
             store = Store(store_name=store_name)
@@ -18,14 +23,17 @@ class StoreManager:
 
 class CategoryManager:
     """Store the data from the api in a MySQL database."""
-    pass
 
     def save(self):
-        pass
+        for store_name in stores:
+            store = Store(store_name=store_name)
+            session.add(store)
+        session.commit()
 
 
 class ProductManager:
     """Store the data from the api in a MySQL database."""
+
     pass
 
     def save(self):
@@ -39,7 +47,7 @@ if __name__ == "__main__":
 
     products = download.get_product(1, 10)
     stores = cleaner.clean(products)
-    save = storemanager.save(stores)    
+    save = storemanager.save(stores)
     print(save)
 
-# Store is undefined ... ? 
+

@@ -1,6 +1,12 @@
 """Create database and insert data from the API."""
 
+from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String
+
+from openfoodfacts import engine
+
+
+Base = declarative_base()
 
 
 class Product(Base):
@@ -8,9 +14,9 @@ class Product(Base):
 
     __tablename__ = 'product'
     id = Column(Integer, primary_key=True, autoincrement=False)
-    product_name = Column(String)
-    nutriscore_grade = Column(String)
-    url = Column(String)
+    product_name = Column(String(100))
+    nutriscore_grade = Column(String(20))
+    url = Column(String(255))
 
     def __repr__(self):
         """Render Product object in a readable way"""
@@ -38,3 +44,5 @@ class Category(Base):
     def __repr__(self):
         """Render Category object in a readable way"""
         return f"{category_name}"
+
+Base.metadata.create_all(engine)
