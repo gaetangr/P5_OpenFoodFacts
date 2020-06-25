@@ -3,7 +3,7 @@
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String
 
-from openfoodfacts import engine
+from . import engine
 
 
 Base = declarative_base()
@@ -30,9 +30,6 @@ class Store(Base):
     id = Column(Integer, primary_key=True)
     store_name = Column(String(80), unique=True)
 
-    def __repr__(self):
-        """Render Store object in a readable way"""
-        return f"{store_name}"
 
 class Category(Base):
     """Store data for the category related to a product"""
