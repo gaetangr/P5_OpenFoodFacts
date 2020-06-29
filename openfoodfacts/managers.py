@@ -11,6 +11,7 @@ from .models import Category, Product, Store
 Session = sessionmaker(bind=engine)
 session = Session()
 
+
 class Manager:
     """ -tc- Base manager providing methods common to all managers."""
 
@@ -23,7 +24,7 @@ class Manager:
         """
         self.Model = Model
 
-    def get_or_create(self, defaults=None, **kwargs):
+    def get_or_create(self, defaults=None, commit=True, **kwargs):
         """Looks up an object with the given kwargs, creating one if necessary."""
         if defaults is None:
             defaults = {}
@@ -31,6 +32,8 @@ class Manager:
         if not instance:
             instance = self.Model(**kwargs, **defaults)
             session.add(instance)
+            if commit:
+                session.commit()
         return instance
 
 
@@ -40,12 +43,16 @@ class StoreManager(Manager):
     def save(self, stores):
         saved_stores = []
         for store_name in stores:
-            saved_stores.append(self.get_or_create(store_name=store_name))
+            saved_stores.append(
+                self.get_or_create(store_name=store_name), commit=False
+            )
+        session.commit()
         return saved_stores
 
 
 class CategoryManager:
     """Store the data from the api in a MySQL database."""
+
     def save(self, categories):
         saved_categories = []
         for store_name in categories:
@@ -71,5 +78,4 @@ if __name__ == "__main__":
     products = download.get_product(1, 10)
     stores = cleaner.clean(products)
     storemanager.save(stores)
-
 
