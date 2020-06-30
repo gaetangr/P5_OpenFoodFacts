@@ -32,5 +32,4 @@ class DataCleaner:
                 clean_products.append(product)
                 clean_stores |= set(product["stores"])
                 clean_categories |= set(product["categories"])
-        return clean_categories
-        # return more than one set or list ?
+        return clean_categories, clean_products, clean_stores

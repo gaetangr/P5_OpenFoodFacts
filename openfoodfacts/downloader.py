@@ -21,9 +21,10 @@ class Downloader:
 
     def get_product(self, page_size=20, pages_number=1):
         """Display product based on specifics parameters."""
+        products = []
         params = self.params.copy()
         params["page_size"] = page_size
-        products = []
+        
         try:
             response = requests.get(self.url, params=params, timeout=3)
             response.json()

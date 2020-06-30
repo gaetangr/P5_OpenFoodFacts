@@ -1,4 +1,4 @@
-"""Create data from openfoofacts."""
+"""Create data from openfoofacts"""
 
 from sqlalchemy.orm import sessionmaker
 
@@ -13,7 +13,7 @@ session = Session()
 
 
 class Manager:
-    """ -tc- Base manager providing methods common to all managers."""
+    """ Base manager providing methods common to all managers."""
 
     def __init__(self, Model):
         """Intitalises the object attributes.
@@ -58,13 +58,24 @@ class CategoryManager(Manager):
         return saved_categories
 
 
-class ProductManager:
+class ProductManager(Manager):
     """Store the data from the api in a MySQL database."""
 
-    pass
-
     def save(self):
-        pass
+
+        for product_info in products:
+            product = Product
+            session.add(product)
+
+            for category_name in product['categories']:
+                category = session.query(Category).filter_by(name=category_name).first() 
+                product.categories.append(category)
+
+            for store_name in product['stores']:
+                store = session.query(Store).filter_by(name=store_name).first() 
+                product.stores.append(store)
+        return 
+        session.commit()
 
 
 if __name__ == "__main__":
@@ -72,7 +83,12 @@ if __name__ == "__main__":
     cleaner = DataCleaner()
 
     categorymanager = CategoryManager(Category)
+    storemanager = StoreManager(Store)
+    productmanager = ProductManager(Product)
 
-    products = download.get_product(1, 10) #télécharger plus de 100
-    category = cleaner.clean(products)
-    categorymanager.save(category)
+    products = download.get_product(1000, 10)
+
+    categories, products, stores = cleaner.clean(products)
+
+    categorymanager.save(categories)
+    storemanager.save(stores)
