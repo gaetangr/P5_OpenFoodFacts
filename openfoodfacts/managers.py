@@ -36,7 +36,7 @@ class Manager:
 
 
 class StoreManager(Manager):
-    """Store the data from the api in a MySQL database."""
+    """Store the stores data from the api in a MySQL database."""
 
     def save(self, stores):
         saved_stores = []
@@ -49,7 +49,7 @@ class StoreManager(Manager):
 
 
 class CategoryManager(Manager):
-    """Store the data from the api in a MySQL database."""
+    """Store the categories data from the api in a MySQL database."""
 
     def save(self, categories):
         saved_categories = []
@@ -59,7 +59,7 @@ class CategoryManager(Manager):
 
 
 class ProductManager(Manager):
-    """Store the data from the api in a MySQL database."""
+    """Store the products data from the api in a MySQL database."""
 
     def save(self):
 

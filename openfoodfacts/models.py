@@ -24,7 +24,7 @@ class Product(Base):
     """Store data for products, nutriscore and url"""
 
     __tablename__ = 'product'
-    id = Column(Integer, primary_key=True, autoincrement=False) #code barre
+    id = Column(Integer, primary_key=True, autoincrement=False)
     product_name = Column(String(100))
     nutriscore_grade = Column(String(20))
     url = Column(String(255))
