@@ -1,5 +1,6 @@
 """Module to cleaned and normalize data from downloader module."""
 
+
 class DataCleaner:
     """Clean the data received from the API."""
 

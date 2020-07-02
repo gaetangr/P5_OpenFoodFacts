@@ -1,4 +1,4 @@
-"""Create data from openfoofacts"""
+"""Create data from openfoofacts."""
 
 from sqlalchemy.orm import sessionmaker
 
@@ -7,23 +7,24 @@ from .cleaner import DataCleaner
 from .downloader import Downloader
 from .models import Category, Product, Store
 
-
 Session = sessionmaker(bind=engine)
 session = Session()
 
 
 class Manager:
-    """ Base manager providing methods common to all managers."""
+    """Base manager providing methods common to all managers."""
 
     def __init__(self, Model):
         """Intitalises the object attributes.
+
         Args:
             Model: Model used to build the reated instances
         """
         self.Model = Model
 
     def get_or_create(self, defaults=None, commit=True, **kwargs):
-        """Looks up an object with the given kwargs, creating one if necessary."""
+        """Looks up an object with the given kwargs, creating one if
+        necessary."""
         if defaults is None:
             defaults = {}
         instance = session.query(self.Model).filter_by(**kwargs).first()
@@ -54,28 +55,33 @@ class CategoryManager(Manager):
     def save(self, categories):
         saved_categories = []
         for category_name in categories:
-            saved_categories.append(self.get_or_create(category_name=category_name))
+            saved_categories.append(
+                self.get_or_create(category_name=category_name)
+            )
         return saved_categories
 
 
 class ProductManager(Manager):
     """Store the products data from the api in a MySQL database."""
 
-    def save(self):
+    def save(self, products):
 
         for product_info in products:
-            product = Product
-            session.add(product)
+            saved_products = products
 
-            for category_name in product['categories']:
-                category = session.query(Category).filter_by(name=category_name).first() 
+            for category_name in saved_products['categories']:
+                category = (
+                    session.query(Category)
+                    .filter_by(name=category_name)
+                    .first()
+                )
                 product.categories.append(category)
 
             for store_name in product['stores']:
-                store = session.query(Store).filter_by(name=store_name).first() 
+                store = session.query(Store).filter_by(name=store_name).first()
                 product.stores.append(store)
-        return 
-        session.commit()
+        return saved_products
+        
 
 
 if __name__ == "__main__":
@@ -86,9 +92,10 @@ if __name__ == "__main__":
     storemanager = StoreManager(Store)
     productmanager = ProductManager(Product)
 
-    products = download.get_product(1000, 10)
+    products = download.get_product(100, 10)
 
     categories, products, stores = cleaner.clean(products)
 
+    productmanager.save(products)
     categorymanager.save(categories)
     storemanager.save(stores)

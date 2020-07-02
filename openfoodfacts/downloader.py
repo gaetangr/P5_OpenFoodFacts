@@ -24,7 +24,7 @@ class Downloader:
         products = []
         params = self.params.copy()
         params["page_size"] = page_size
-        
+
         try:
             response = requests.get(self.url, params=params, timeout=3)
             response.json()

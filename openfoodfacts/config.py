@@ -11,4 +11,3 @@ HOST = os.getenv("HOST")
 DATABASE = os.getenv("DATABASE", "openfoodfacts")
 
 ############## REQUEST CONFIG ##############
-

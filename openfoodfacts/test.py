@@ -1,15 +1,8 @@
-class Parent(Base):
-    __tablename__ = 'left'
-    id = Column(Integer, primary_key=True)
-    children = relationship(
-        "Child",
-        secondary=association_table,
-        back_populates="parents")
+""" Download path progression from Openclassroom """
+from bs4 import BeautifulSoup
+import requests
 
-class Child(Base):
-    __tablename__ = 'right'
-    id = Column(Integer, primary_key=True)
-    parents = relationship(
-        "Parent",
-        secondary=association_table,
-        back_populates="children")
+r = requests.get('http://coreyms.com').text
+soup = BeautifulSoup(r, 'lxml')
+article = soup.find('article')
+print(article)
