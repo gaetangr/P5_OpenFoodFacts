@@ -75,13 +75,12 @@ class ProductManager(Manager):
                     .filter_by(name=category_name)
                     .first()
                 )
-                product.categories.append(category)
+                saved_products.categories.append(category)
 
-            for store_name in product['stores']:
+            for store_name in saved_products['stores']:
                 store = session.query(Store).filter_by(name=store_name).first()
-                product.stores.append(store)
+                saved_products.stores.append(store)
         return saved_products
-        
 
 
 if __name__ == "__main__":

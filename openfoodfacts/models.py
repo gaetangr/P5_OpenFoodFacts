@@ -69,7 +69,9 @@ class Category(Base):
 
     # Association tables Category #
     products = relationship(
-        "Product", secondary=product_category_table, back_populates="categories"
+        "Product",
+        secondary=product_category_table,
+        back_populates="categories",
     )
 
     def __repr__(self):
