@@ -69,14 +69,11 @@ class Category(Base):
 
     # Association tables Category #
     products = relationship(
-        "Product",
-        secondary=product_category_table,
-        back_populates="categories",
+        "Product", secondary=product_category_table, back_populates="categories"
     )
 
     def __repr__(self):
         """Render Category object in a readable way."""
         return f"{category_name}"
-
 
 Base.metadata.create_all(engine)
