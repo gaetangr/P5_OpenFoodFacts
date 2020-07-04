@@ -1,5 +1,6 @@
 """Create data from openfoofacts."""
 
+from pprint import pprint
 from sqlalchemy.orm import sessionmaker
 
 from . import engine
@@ -83,18 +84,26 @@ class ProductManager(Manager):
         return saved_products
 
 
-if __name__ == "__main__":
-    download = Downloader()
-    cleaner = DataCleaner()
+# if __name__ == "__main__":
+#     download = Downloader()
+#     cleaner = DataCleaner()
 
-    categorymanager = CategoryManager(Category)
-    storemanager = StoreManager(Store)
-    productmanager = ProductManager(Product)
+#     categorymanager = CategoryManager(Category)
+#     storemanager = StoreManager(Store)
+#     productmanager = ProductManager(Product)
 
-    products = download.get_product(100, 10)
+#     products = download.get_product(100, 10)
 
-    categories, products, stores = cleaner.clean(products)
+#     categories, products, stores = cleaner.clean(products)
 
-    productmanager.save(products)
-    categorymanager.save(categories)
-    storemanager.save(stores)
+#     productmanager.save(products)
+#     categorymanager.save(categories)
+#     storemanager.save(stores)
+
+user_query = session.query(Store.store_name).all()
+category_user = session.query(Category.category_name).all()
+product_user = session.query(Product).count()
+
+pprint(user_query)
+pprint(category_user)
+pprint(product_user)
