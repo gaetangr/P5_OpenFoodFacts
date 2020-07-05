@@ -1,5 +1,6 @@
 """Create data from openfoofacts."""
 
+from pprint import pprint
 from sqlalchemy.orm import sessionmaker
 
 from . import engine
@@ -7,25 +8,28 @@ from .cleaner import DataCleaner
 from .downloader import Downloader
 from .models import Category, Product, Store
 
-
 Session = sessionmaker(bind=engine)
 session = Session()
 
 
 class Manager:
-    """ -tc- Base manager providing methods common to all managers."""
+    """Base manager providing methods common to all managers."""
 
     def __init__(self, Model):
         """Intitalises the object attributes.
 
         Args:
             Model: Model used to build the reated instances
-
         """
         self.Model = Model
 
     def get_or_create(self, defaults=None, commit=True, **kwargs):
+<<<<<<< HEAD
         """Looks up an object with the given kwargs, creating one if necessary."""
+=======
+        """Looks up an object with the given kwargs, creating one if
+        necessary."""
+>>>>>>> 2a9a0efa67494ddd68933ecf0b0bdacbf1ec780f
         if defaults is None:
             defaults = {}
         instance = session.query(self.Model).filter_by(**kwargs).first()
@@ -38,7 +42,7 @@ class Manager:
 
 
 class StoreManager(Manager):
-    """Store the data from the api in a MySQL database."""
+    """Store the stores data from the api in a MySQL database."""
 
     def save(self, stores):
         saved_stores = []
@@ -50,32 +54,68 @@ class StoreManager(Manager):
         return saved_stores
 
 
+<<<<<<< HEAD
 class CategoryManager:
     """Store the data from the api in a MySQL database."""
+=======
+class CategoryManager(Manager):
+    """Store the categories data from the api in a MySQL database."""
+>>>>>>> 2a9a0efa67494ddd68933ecf0b0bdacbf1ec780f
 
     def save(self, categories):
         saved_categories = []
-        for store_name in categories:
-            saved_categories.append(self.get_or_create(store_name=store_name))
+        for category_name in categories:
+            saved_categories.append(
+                self.get_or_create(category_name=category_name)
+            )
         return saved_categories
 
 
-class ProductManager:
-    """Store the data from the api in a MySQL database."""
+class ProductManager(Manager):
+    """Store the products data from the api in a MySQL database."""
 
-    pass
+    def save(self, products):
 
-    def save(self):
-        pass
+        for product_info in products:
+            saved_products = products
+
+            for category_name in saved_products['categories']:
+                category = (
+                    session.query(Category)
+                    .filter_by(name=category_name)
+                    .first()
+                )
+                saved_products.categories.append(category)
+
+            for store_name in saved_products['stores']:
+                store = session.query(Store).filter_by(name=store_name).first()
+                saved_products.stores.append(store)
+        return saved_products
 
 
-if __name__ == "__main__":
-    download = Downloader()
-    cleaner = DataCleaner()
+# if __name__ == "__main__":
+#     download = Downloader()
+#     cleaner = DataCleaner()
 
-    storemanager = StoreManager(Store)
+#     categorymanager = CategoryManager(Category)
+#     storemanager = StoreManager(Store)
+#     productmanager = ProductManager(Product)
 
-    products = download.get_product(1, 10)
-    stores = cleaner.clean(products)
-    storemanager.save(stores)
+#     products = download.get_product(100, 10)
 
+#     categories, products, stores = cleaner.clean(products)
+
+#     productmanager.save(products)
+#     categorymanager.save(categories)
+#     storemanager.save(stores)
+
+<<<<<<< HEAD
+=======
+user_query = session.query(Store.store_name).all()
+category_user = session.query(Category.category_name).all()
+product_user = session.query(Product).count()
+
+pprint(user_query)
+pprint(category_user)
+pprint(product_user)
+>>>>>>> 2a9a0efa67494ddd68933ecf0b0bdacbf1ec780f
