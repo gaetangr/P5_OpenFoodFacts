@@ -24,12 +24,8 @@ class Manager:
         self.Model = Model
 
     def get_or_create(self, defaults=None, commit=True, **kwargs):
-<<<<<<< HEAD
-        """Looks up an object with the given kwargs, creating one if necessary."""
-=======
         """Looks up an object with the given kwargs, creating one if
         necessary."""
->>>>>>> 2a9a0efa67494ddd68933ecf0b0bdacbf1ec780f
         if defaults is None:
             defaults = {}
         instance = session.query(self.Model).filter_by(**kwargs).first()
@@ -48,26 +44,22 @@ class StoreManager(Manager):
         saved_stores = []
         for store_name in stores:
             saved_stores.append(
-                self.get_or_create(store_name=store_name), commit=False
+                self.get_or_create(store_name=store_name, commit=False)
             )
         session.commit()
         return saved_stores
 
 
-<<<<<<< HEAD
-class CategoryManager:
-    """Store the data from the api in a MySQL database."""
-=======
 class CategoryManager(Manager):
     """Store the categories data from the api in a MySQL database."""
->>>>>>> 2a9a0efa67494ddd68933ecf0b0bdacbf1ec780f
 
     def save(self, categories):
         saved_categories = []
         for category_name in categories:
             saved_categories.append(
-                self.get_or_create(category_name=category_name)
+                self.get_or_create(category_name=category_name, commit=False)
             )
+        session.commit()
         return saved_categories
 
 
@@ -75,47 +67,48 @@ class ProductManager(Manager):
     """Store the products data from the api in a MySQL database."""
 
     def save(self, products):
-
+        saved_products = []
         for product_info in products:
-            saved_products = products
-
-            for category_name in saved_products['categories']:
+            product = Product(
+                id=int(product_info.get("code")),
+                product_name=product_info.get("product_name"),
+                nutriscore_grade=product_info.get("nutriscore_grade"),
+                url=product_info.get("url"),
+            )
+            saved_products.append(product)
+            for category_name in product_info['categories']:
                 category = (
                     session.query(Category)
-                    .filter_by(name=category_name)
+                    .filter_by(category_name=category_name)
                     .first()
                 )
-                saved_products.categories.append(category)
+                product.categories.append(category)
 
-            for store_name in saved_products['stores']:
-                store = session.query(Store).filter_by(name=store_name).first()
-                saved_products.stores.append(store)
+            for store_name in product_info['stores']:
+                store = (
+                    session.query(Store)
+                    .filter_by(store_name=store_name)
+                    .first()
+                )
+                product.stores.append(store)
+
+            session.add(product)
+        session.commit()
         return saved_products
 
 
-# if __name__ == "__main__":
-#     download = Downloader()
-#     cleaner = DataCleaner()
+if __name__ == "__main__":
+    download = Downloader()
+    cleaner = DataCleaner()
 
-#     categorymanager = CategoryManager(Category)
-#     storemanager = StoreManager(Store)
-#     productmanager = ProductManager(Product)
+    categorymanager = CategoryManager(Category)
+    storemanager = StoreManager(Store)
+    productmanager = ProductManager(Product)
 
-#     products = download.get_product(100, 10)
+    products = download.get_product(100, 10)
 
-#     categories, products, stores = cleaner.clean(products)
+    categories, products, stores = cleaner.clean(products)
 
-#     productmanager.save(products)
-#     categorymanager.save(categories)
-#     storemanager.save(stores)
-
-<<<<<<< HEAD
-=======
-user_query = session.query(Store.store_name).all()
-category_user = session.query(Category.category_name).all()
-product_user = session.query(Product).count()
-
-pprint(user_query)
-pprint(category_user)
-pprint(product_user)
->>>>>>> 2a9a0efa67494ddd68933ecf0b0bdacbf1ec780f
+    categorymanager.save(categories)
+    storemanager.save(stores)
+    productmanager.save(products)
