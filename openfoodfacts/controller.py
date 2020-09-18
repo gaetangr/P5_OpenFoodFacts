@@ -48,11 +48,6 @@ class UserMenu:
         print("A bientôt")
         self.running = False    
 
-        
 if __name__ == "__main__":
     user_menu = UserMenu()
     user_menu.start()
-    
-
-
-        
