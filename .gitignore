@@ -7,4 +7,5 @@ CACHE/
 db/
 .gitignore
 Pipfile*
+sqlite3.db
 
