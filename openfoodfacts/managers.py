@@ -19,13 +19,21 @@ class Manager:
         """Intitalises the object attributes.
 
         Args:
-            Model: Model used to build the reated instances
+            Model: Model used to build the created instances
         """
         self.Model = Model
 
     def get_or_create(self, defaults=None, commit=True, **kwargs):
         """Looks up an object with the given kwargs, creating one if
-        necessary."""
+        necessary.
+
+        Args:
+            defaults ([type], optional): [description]. Defaults to None.
+            commit (bool, optional): [description]. Defaults to True.
+
+        Returns:
+            [type]: [description]
+        """
         if defaults is None:
             defaults = {}
         instance = session.query(self.Model).filter_by(**kwargs).first()
@@ -54,6 +62,14 @@ class CategoryManager(Manager):
     """Store the categories data from the api in a MySQL database."""
 
     def save(self, categories):
+        """Method to save the categories inside my database
+
+        Args:
+            categories (list): Products categories from the API
+
+        Returns:
+            list: return a list of categories
+        """
         saved_categories = []
         for category_name in categories:
             saved_categories.append(
@@ -67,6 +83,14 @@ class ProductManager(Manager):
     """Store the products data from the api in a MySQL database."""
 
     def save(self, products):
+        """Save the products data from the api in a MySQL database.
+
+        Args:
+            products (list): Products from the API
+
+        Returns:
+            list: return a list of products
+        """
         saved_products = []
         for product_info in products:
             product = self.get_or_create(

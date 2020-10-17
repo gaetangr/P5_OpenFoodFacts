@@ -19,7 +19,12 @@ class UserMenu:
             self.next = self.next()
 
     def main_menu(self):
-        """Display base menu for user """
+        """
+        Display the main menu for the user in command line interface
+
+        Returns:
+            str: Return a list of choices 
+        """
 
         print(Fore.GREEN + "\n------ Menu principal ------\n")
         print(Fore.YELLOW + "1 - Choisir un substitut\n2 - Mes favoris")
@@ -32,7 +37,11 @@ class UserMenu:
 
 
     def category_menu(self):
-        """Display categories for the user """
+        """Display categories for the user
+
+        Returns:
+            str: Return a list of choices 
+        """
         # afficher categories depuis base avec les chiffres jusqua 5
         print(Fore.GREEN + "\n------ Catégories ------\n")
         choice = input("Choissisez une catégorie:") # tant que pas de categorie continuer donc return categorie menu
@@ -40,7 +49,11 @@ class UserMenu:
         return getattr(self, choice)
 
     def product_menu(self):
-        """Display products once for a given category"""
+        """Display products once for a given category
+        
+        Returns:
+            str: Return a list of choices 
+        """
 
         print(Fore.GREEN + "\n------ Produits ------\n")
         choice = input("Choissisez un produit:")

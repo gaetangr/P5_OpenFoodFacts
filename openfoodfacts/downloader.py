@@ -20,7 +20,15 @@ class Downloader:
         }
 
     def get_product(self, page_size=20, pages_number=1):
-        """Display product based on specifics parameters."""
+        """Display product based on specifics parameters.
+
+        Args:
+            page_size (int, optional): Number of products. Defaults to 20.
+            pages_number (int, optional): Page number to get products. Defaults to 1.
+
+        Returns:
+            list: Return a list of products 
+        """
         products = []
         params = self.params.copy()
         params["page_size"] = page_size
