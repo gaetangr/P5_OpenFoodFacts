@@ -1,14 +1,13 @@
 """Config for the database and SqlAlchemy."""
 import os
 
-from dotenv import load_dotenv
-
 ############## DATABASE CONFIG ##############
 
-load_dotenv()
-USER = os.getenv("USER")
-PASSWORD = os.getenv("PASSWORD")
-HOST = os.getenv("HOST")
-DATABASE = os.getenv("DATABASE", "openfoodfacts")
+USER = os.environ.get("USER")
+PASSWORD = os.environ.get("PASSWORD")
+HOST = os.environ.get("HOST")
+DATABASE = os.environ.get("DATABASE", "openfoodfacts")
 
 #############################################
+
+print(USER, PASSWORD, HOST, DATABASE)

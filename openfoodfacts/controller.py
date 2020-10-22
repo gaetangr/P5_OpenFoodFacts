@@ -28,13 +28,24 @@ class UserMenu:
 
         print(Fore.GREEN + "\n------ Menu principal ------\n")
         print(Fore.YELLOW + "1 - Choisir un substitut\n2 - Mes favoris")
-        choice = input("Choissisez une option:") #valider differents choix
+        choice = input("Choissisez une option:")
         if choice == "1":
-            print("hello") #return methode qui va bien, menu categorie, return self cateogry menu
-            # def favoris menu
+            return self.category_menu
+        elif choice == "2":
+            return self.favorite_menu
         else:
-            return getattr(self, choice) # return self main menu on reaffiche le menu encore et encore
+            print("Choix invalide")
+            return self.main_menu
 
+    def favorite_menu(self):
+            """Display favoris for the user
+
+            Returns:
+                str: Return a list of choices 
+            """
+            # afficher categories depuis base avec les chiffres jusqua 5
+            print(Fore.GREEN + "\n------ Favoris ------\n")
+            
 
     def category_menu(self):
         """Display categories for the user
@@ -45,8 +56,12 @@ class UserMenu:
         # afficher categories depuis base avec les chiffres jusqua 5
         print(Fore.GREEN + "\n------ Catégories ------\n")
         choice = input("Choissisez une catégorie:") # tant que pas de categorie continuer donc return categorie menu
-
-        return getattr(self, choice)
+        if choice == "2":
+            print("Soda") #exemple pour test ..
+        elif choice == "0":
+            return self.main_menu
+        else:
+            return self.category_menu
 
     def product_menu(self):
         """Display products once for a given category
