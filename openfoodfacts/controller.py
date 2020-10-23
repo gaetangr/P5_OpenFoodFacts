@@ -5,13 +5,13 @@ from colorama import Fore, Back, Style
 from .managers import session, Store, Category, Product
 from pprint import pprint
 from sqlalchemy.orm import sessionmaker
-from  sqlalchemy.sql.expression import func, select
+from sqlalchemy.sql.expression import func, select
 
 from . import engine
 
 Session = sessionmaker(bind=engine)
 session = Session()
-q = session.query(Category.category_name).order_by(func.random()).limit(5).all()
+
 init()
 
 class UserMenu:
@@ -52,6 +52,8 @@ class UserMenu:
             """
             # afficher categories depuis base avec les chiffres jusqua 5
             print(Fore.GREEN + "\n------ Favoris ------\n")
+            choice = input("Choissisez une option:")
+            return self.main_menu
             
 
     def category_menu(self):
@@ -60,12 +62,13 @@ class UserMenu:
         Returns:
             str: Return a list of choices 
         """
-       
+        q = session.query(Category.category_name).order_by(func.random()).limit(6).all()
         print(Fore.GREEN + "\n------ Catégories ------\n")
-        
+        for n, category_name in enumerate(q):
+            print(f"{n} - {category_name}")
         choice = input("Choissisez une option:")
-        
-        return getattr(self, choice)
+        return self.main_menu
+    
 
     def product_menu(self):
         """Display products once for a given category
@@ -73,7 +76,7 @@ class UserMenu:
         Returns:
             str: Return a list of choices 
         """
-
+        q = session.query(Product.product_name).order_by(func.random()).limit(6).all()
         print(Fore.GREEN + "\n------ Produits ------\n")
         choice = input("Choissisez un produit:")
         return getattr(self, choice)
@@ -84,9 +87,9 @@ class UserMenu:
         print("A bientôt")
         self.running = False    
 
-for choices in enumerate(q):
-            print(choices)
+
+
 if __name__ == "__main__":
-    """ 
+    
     user_menu = UserMenu()
-    user_menu.start() """
+    user_menu.start()
