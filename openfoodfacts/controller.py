@@ -4,7 +4,14 @@ from colorama import Fore, Back, Style
 
 from .managers import session, Store, Category, Product
 from pprint import pprint
+from sqlalchemy.orm import sessionmaker
+from  sqlalchemy.sql.expression import func, select
 
+from . import engine
+
+Session = sessionmaker(bind=engine)
+session = Session()
+q = session.query(Category.category_name).order_by(func.random()).limit(5).all()
 init()
 
 class UserMenu:
@@ -53,15 +60,12 @@ class UserMenu:
         Returns:
             str: Return a list of choices 
         """
-        # afficher categories depuis base avec les chiffres jusqua 5
+       
         print(Fore.GREEN + "\n------ Catégories ------\n")
-        choice = input("Choissisez une catégorie:") # tant que pas de categorie continuer donc return categorie menu
-        if choice == "2":
-            print("Soda") #exemple pour test ..
-        elif choice == "0":
-            return self.main_menu
-        else:
-            return self.category_menu
+        
+        choice = input("Choissisez une option:")
+        
+        return getattr(self, choice)
 
     def product_menu(self):
         """Display products once for a given category
@@ -80,6 +84,9 @@ class UserMenu:
         print("A bientôt")
         self.running = False    
 
+for choices in enumerate(q):
+            print(choices)
 if __name__ == "__main__":
+    """ 
     user_menu = UserMenu()
-    user_menu.start()
+    user_menu.start() """

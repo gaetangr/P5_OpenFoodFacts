@@ -65,7 +65,7 @@ class Category(Base):
 
     __tablename__ = 'category'
     id = Column(Integer, primary_key=True)
-    category_name = Column(String(100), unique=True)
+    category_name = Column(String(400), unique=True)
 
     # Association tables Category #
     products = relationship(

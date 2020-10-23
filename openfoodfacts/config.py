@@ -9,5 +9,3 @@ HOST = os.environ.get("HOST")
 DATABASE = os.environ.get("DATABASE", "openfoodfacts")
 
 #############################################
-
-print(USER, PASSWORD, HOST, DATABASE)

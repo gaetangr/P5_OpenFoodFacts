@@ -121,19 +121,18 @@ class ProductManager(Manager):
         session.commit()
         return saved_products
 
-
 if __name__ == "__main__":
-    download = Downloader()
-    cleaner = DataCleaner()
+        download = Downloader()
+        cleaner = DataCleaner()
 
-    categorymanager = CategoryManager(Category)
-    storemanager = StoreManager(Store)
-    productmanager = ProductManager(Product)
+        categorymanager = CategoryManager(Category)
+        storemanager = StoreManager(Store)
+        productmanager = ProductManager(Product)
 
-    products = download.get_product(100, 10)
+        products = download.get_product(100, 10)
 
-    categories, products, stores = cleaner.clean(products)
+        categories, products, stores = cleaner.clean(products)
 
-    categorymanager.save(categories)
-    storemanager.save(stores)
-    productmanager.save(products)
+        categorymanager.save(categories)
+        storemanager.save(stores)
+        productmanager.save(products)
