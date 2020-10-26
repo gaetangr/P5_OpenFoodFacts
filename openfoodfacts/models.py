@@ -1,6 +1,6 @@
 """Create database and insert data from the API."""
 
-from sqlalchemy import Column, ForeignKey, Integer, String, Table
+from sqlalchemy import Column, ForeignKey, Integer, String, Table, BigInteger
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import backref, relationship
 
@@ -13,13 +13,13 @@ Base = declarative_base()
 product_category_table = Table(
     'product_category',
     Base.metadata,
-    Column('product_id', Integer, ForeignKey('product.id')),
+    Column('product_id', BigInteger, ForeignKey('product.id')),
     Column('category_id', Integer, ForeignKey('category.id')),
 )
 product_store_table = Table(
     'product_store',
     Base.metadata,
-    Column('product_id', Integer, ForeignKey('product.id')),
+    Column('product_id', BigInteger, ForeignKey('product.id')),
     Column('store_id', Integer, ForeignKey('store.id')),
 )
 
@@ -28,7 +28,7 @@ class Product(Base):
     """Store data for products, nutriscore and url."""
 
     __tablename__ = 'product'
-    id = Column(Integer, primary_key=True, autoincrement=False)
+    id = Column(BigInteger, primary_key=True, autoincrement=False)
     product_name = Column(String(100))
     nutriscore_grade = Column(String(20))
     url = Column(String(255))

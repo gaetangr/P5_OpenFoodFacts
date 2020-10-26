@@ -35,13 +35,13 @@ class UserMenu:
 
         print(Fore.GREEN + "\n------ Menu principal ------\n")
         print(Fore.YELLOW + "1 - Choisir un substitut\n2 - Mes favoris")
-        choice = input("Choissisez une option:")
+        choice = input("\nChoissisez une option:")
         if choice == "1":
             return self.category_menu
         elif choice == "2":
             return self.favorite_menu
         else:
-            print("Choix invalide")
+            print(Fore.RED + "\n ⚠ Choix invalide ⚠")
             return self.main_menu
 
     def favorite_menu(self):
@@ -52,7 +52,7 @@ class UserMenu:
             """
             # afficher categories depuis base avec les chiffres jusqua 5
             print(Fore.GREEN + "\n------ Favoris ------\n")
-            choice = input("Choissisez une option:")
+            choice = input("\nChoissisez une option:")
             return self.main_menu
             
 
@@ -62,12 +62,16 @@ class UserMenu:
         Returns:
             str: Return a list of choices 
         """
-        q = session.query(Category.category_name).order_by(func.random()).limit(6).all()
+        category = session.query(Category).order_by(func.random()).limit(6).all()
         print(Fore.GREEN + "\n------ Catégories ------\n")
-        for n, category_name in enumerate(q):
-            print(f"{n} - {category_name}")
-        choice = input("Choissisez une option:")
-        return self.main_menu
+        for n, category in enumerate(category):
+            print(f"{n} - {category.category_name} ---- ID CATEGORY: {category.id}")
+        choice = input("\nChoissisez une catégorie:")
+        if choice == n :
+            print(f"{category.category_name} {category.id}")
+        elif choice > "5":
+            print(Fore.RED + "\n ⚠ Choix invalide ⚠")
+            return self.category_menu
     
 
     def product_menu(self):
@@ -76,17 +80,27 @@ class UserMenu:
         Returns:
             str: Return a list of choices 
         """
-        q = session.query(Product.product_name).order_by(func.random()).limit(6).all()
+        products = session.query(Product.product_name).all()
+        products_nutriscore = session.query(Product.nutriscore_grade).all()
+        products_url = session.query(Product.url).all()
+
         print(Fore.GREEN + "\n------ Produits ------\n")
-        choice = input("Choissisez un produit:")
-        return getattr(self, choice)
+        for n, product in enumerate(products):
+            print(f"{n} - {product[0]} {products_nutriscore[0]} {products_url[0]}")
+        choice = input("\nChoissisez un produit:")
+        if choice == "1":
+            print("ok")
+        elif choice > "5":
+            print(Fore.RED + "\n ⚠ Choix invalide ⚠")
+            return self.category_menu
+        
+
 
     def quit(self):
         """Quit the menu"""
 
         print("A bientôt")
         self.running = False    
-
 
 
 if __name__ == "__main__":
