@@ -113,6 +113,7 @@ class UserMenu:
             print(
                 f"{n} - {product_n} | Nutriscore: [{product_n.nutriscore_grade.upper()}]"
             )
+        # commencer algo de subtisition -gg
         choice = input("\nChoissisez un produit:")
         if not choice.isdigit():
             print(Fore.RED + "\n ⚠ Choix invalide ⚠")
