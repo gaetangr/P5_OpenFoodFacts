@@ -1,7 +1,10 @@
 """Display a menu for the user to choose a better product."""
+import time
+
 from colorama import init
 from colorama import Fore, Back, Style
 
+from .config import display_limit
 from .managers import session, Store, Category, Product
 from pprint import pprint
 from sqlalchemy.orm import sessionmaker
@@ -15,11 +18,16 @@ session = Session()
 init()
 
 class UserMenu:
-    """Handle the logic to display the menu
-    and fetch products from the database """
+    """
+    This class take care of the whole 
+    menu logic where each methods handle
+    a different menu allowing a very
+    flexible navigation between them 
+    """
+    
     def __init__(self):
         self.next = self.main_menu
-
+        
     def start(self):
         self.running = True
         while self.running:
@@ -34,12 +42,14 @@ class UserMenu:
         """
 
         print(Fore.GREEN + "\n------ Menu principal ------\n")
-        print(Fore.YELLOW + "1 - Choisir un substitut\n2 - Mes favoris")
+        print(Fore.YELLOW + "1 - Choisir un substitut 🍩\n2 - Mes favoris ⭐\n3 - Quitter ❌") 
         choice = input("\nChoissisez une option:")
         if choice == "1":
             return self.category_menu
         elif choice == "2":
             return self.favorite_menu
+        elif choice == "3":
+            return self.quit
         else:
             print(Fore.RED + "\n ⚠ Choix invalide ⚠")
             return self.main_menu
@@ -50,8 +60,7 @@ class UserMenu:
             Returns:
                 str: Return a list of choices 
             """
-            # afficher categories depuis base avec les chiffres jusqua 5
-            print(Fore.GREEN + "\n------ Favoris ------\n")
+            print(Fore.GREEN + "\n------⭐ Favoris ⭐------\n")
             choice = input("\nChoissisez une option:")
             return self.main_menu
             
@@ -62,46 +71,42 @@ class UserMenu:
         Returns:
             str: Return a list of choices 
         """
-        category = session.query(Category).order_by(func.random()).limit(6).all()
-        print(Fore.GREEN + "\n------ Catégories ------\n")
-        for n, category in enumerate(category):
-            print(f"{n} - {category.category_name} ---- ID CATEGORY: {category.id}")
+        category = session.query(Category).order_by(func.random()).limit(display_limit).all()
+
+        print(Fore.GREEN + "\n------🍩 Catégories 🍩------\n")
+        for n, category_n in enumerate(category):
+            print(f"{n} - {category_n.category_name} | ({len(category_n.products)}) produits")
+        print(Fore.YELLOW + "\nAstuce: Appuyez sur <entrée> pour afficher de nouvelles catégories")
         choice = input("\nChoissisez une catégorie:")
-        if choice == n :
-            print(f"{category.category_name} {category.id}")
-        elif choice > "5":
+        if not choice.isdigit():
             print(Fore.RED + "\n ⚠ Choix invalide ⚠")
             return self.category_menu
-    
-
+        else:
+            choice = int(choice)
+            print(f"Liste des produits : {category[choice].products}")
+            return self.category_menu
+            
     def product_menu(self):
         """Display products once for a given category
         
         Returns:
             str: Return a list of choices 
         """
-        products = session.query(Product.product_name).all()
-        products_nutriscore = session.query(Product.nutriscore_grade).all()
-        products_url = session.query(Product.url).all()
-
-        print(Fore.GREEN + "\n------ Produits ------\n")
-        for n, product in enumerate(products):
-            print(f"{n} - {product[0]} {products_nutriscore[0]} {products_url[0]}")
-        choice = input("\nChoissisez un produit:")
-        if choice == "1":
-            print("ok")
-        elif choice > "5":
-            print(Fore.RED + "\n ⚠ Choix invalide ⚠")
-            return self.category_menu
+        choice = int(choice)
         
-
+        input("")
+        return self.product_menu
 
     def quit(self):
-        """Quit the menu"""
+        """Quit the menu and wave goodbye"""
 
-        print("A bientôt")
-        self.running = False    
-
+        choice = input(Fore.RED + "Voulez-vous quitter le programme [O/N] ?")
+        if choice == "O" or "o":
+            print(Fore.RED + "Merci d'avoir utilisé le programme 👋 ")
+            time.sleep(2)
+            self.running = False
+        else:
+            return self.category_menu
 
 if __name__ == "__main__":
     

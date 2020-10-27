@@ -1,8 +1,9 @@
 
 # OpenFoodFacts
 
-Project that request data from the OpenFoodFact API, parse and store into a database 
-for further use.
+Project that request data from the OpenFoodFacts API, parse and store into a database 
+for offline use.
+This project is in CLI also know as command-line interface, it will be available in a web app very soon.
 
 ## Summary 
 
@@ -17,6 +18,7 @@ for further use.
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+
 
 ### Prerequisites
 

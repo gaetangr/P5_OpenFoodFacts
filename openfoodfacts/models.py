@@ -33,7 +33,6 @@ class Product(Base):
     nutriscore_grade = Column(String(20))
     url = Column(String(255))
 
-    # Association tables Product #
     categories = relationship(
         "Category", secondary=product_category_table, back_populates="products"
     )
@@ -44,7 +43,7 @@ class Product(Base):
 
     def __repr__(self):
         """Render Product object in a readable way."""
-        return f"{product_name} {nutriscore_grade} {url}"
+        return self.product_name
 
 
 class Store(Base):
@@ -54,7 +53,6 @@ class Store(Base):
     id = Column(Integer, primary_key=True)
     store_name = Column(String(80), unique=True)
 
-    # Association tables Store #
     products = relationship(
         "Product", secondary=product_store_table, back_populates="stores"
     )
@@ -67,7 +65,6 @@ class Category(Base):
     id = Column(Integer, primary_key=True)
     category_name = Column(String(400), unique=True)
 
-    # Association tables Category #
     products = relationship(
         "Product", secondary=product_category_table, back_populates="categories"
     )
