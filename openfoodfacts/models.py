@@ -43,7 +43,7 @@ class Product(Base):
 
     def __repr__(self):
         """Render Product object in a readable way."""
-        return self.product_name
+        return (f"{self.product_name}")
 
 
 class Store(Base):
@@ -71,6 +71,6 @@ class Category(Base):
 
     def __repr__(self):
         """Render Category object in a readable way."""
-        return f"{category_name}"
+        return f"{self.category_name}"
 
 Base.metadata.create_all(engine)
