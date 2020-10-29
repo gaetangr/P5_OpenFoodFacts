@@ -77,13 +77,13 @@ class UserMenu:
 
         print(Fore.GREEN + "\n------🍩 Catégories 🍩------\n")
         for n, category_n in enumerate(category):
-            if len(category_n.category_name) >= 31:
+            if len(category_n.category_name) >= 31: # Truncate products if too long
                 truncate = f"{category_n.category_name[:30]} (...)"
             else:
                 truncate = category_n.category_name
 
             content = f"{n} - {truncate} | ({len(category_n.products)})"
-            if len(category_n.products) > 1:
+            if len(category_n.products) > 1: # plural if more than one product in DB
                 print(f"{content} produits")
             else:
                 print(f"{content} produit")
@@ -108,16 +108,26 @@ class UserMenu:
         Returns:
             str: Return a list of choices
         """
+        good_products = ["A", "B"]
+        bad_products = ["C", "D", "E", "F"]
 
         for n, product_n in enumerate(self.category.products):
+            if product_n.nutriscore_grade == good_products:
+                print("bon")
+            elif product_n.nutriscore_grade == bad_products:
+                print("pas bon")  
             print(
                 f"{n} - {product_n} | Nutriscore: [{product_n.nutriscore_grade.upper()}]"
             )
         # commencer algo de subtisition -gg
-        choice = input("\nChoissisez un produit:")
+        choice = input("\nChoissisez un produit à subsituer:")
         if not choice.isdigit():
             print(Fore.RED + "\n ⚠ Choix invalide ⚠")
-        return self.product_menu
+            return self.product_menu
+        else:
+            choice = int(choice)
+            print(f"Vous avez choisi: {self.category.products[choice]}")
+            return self.product_menu
 
     def quit(self):
         """Quit the menu and wave goodbye"""
