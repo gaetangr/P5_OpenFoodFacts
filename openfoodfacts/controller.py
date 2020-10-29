@@ -108,26 +108,35 @@ class UserMenu:
         Returns:
             str: Return a list of choices
         """
-        good_products = ["A", "B"]
-        bad_products = ["C", "D", "E", "F"]
+        good_products = ["a", "b"]
+        bad_products = ["c", "d", "e", "f"]
 
         for n, product_n in enumerate(self.category.products):
-            if product_n.nutriscore_grade == good_products:
-                print("bon")
-            elif product_n.nutriscore_grade == bad_products:
-                print("pas bon")  
-            print(
-                f"{n} - {product_n} | Nutriscore: [{product_n.nutriscore_grade.upper()}]"
-            )
-        # commencer algo de subtisition -gg
-        choice = input("\nChoissisez un produit à subsituer:")
+            content = f"{n} - {product_n} | Nutriscore: [{product_n.nutriscore_grade.upper()}]"
+            if product_n.nutriscore_grade in good_products:
+                rating = print(f"{content} | 👍")
+            elif product_n.nutriscore_grade in bad_products:
+                rating = print(f"{content} | 👎") 
+
+        choice = input("\nChoissisez un produit à substituer:")
         if not choice.isdigit():
             print(Fore.RED + "\n ⚠ Choix invalide ⚠")
             return self.product_menu
         else:
             choice = int(choice)
-            print(f"Vous avez choisi: {self.category.products[choice]}")
-            return self.product_menu
+            print(f"Vous avez choisi: {self.category.products[choice]}\n")
+            for n, product_n in enumerate(self.category.products):
+                if product_n.nutriscore_grade in good_products:
+                    print(Fore.GREEN + "Nous vous proposons:\n")
+                    print(product_n)
+                    choice = input("Voulez-vous enregistrer le substitue ?")
+                    return self.favorite_menu()
+                else:
+                    print("Aucun substitue trouvé 🤷‍♂️")
+                    print("Retour au menu principal ...")
+                    time.sleep(4)
+                    return self.main_menu
+                
 
     def quit(self):
         """Quit the menu and wave goodbye"""
