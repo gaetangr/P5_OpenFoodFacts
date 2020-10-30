@@ -57,6 +57,9 @@ class Store(Base):
         "Product", secondary=product_store_table, back_populates="stores"
     )
 
+    def __repr__(self):
+        """Render Store object in a readable way."""
+        return (f"{self.store_name}")
 
 class Category(Base):
     """Store data for the category related to a product."""

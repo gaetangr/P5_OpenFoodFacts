@@ -128,14 +128,17 @@ class UserMenu:
             for n, product_n in enumerate(self.category.products):
                 if product_n.nutriscore_grade in good_products:
                     print(Fore.GREEN + "Nous vous proposons:\n")
-                    print(product_n)
-                    choice = input("Voulez-vous enregistrer le substitue ?")
-                    return self.favorite_menu()
-                else:
-                    print("Aucun substitue trouvé 🤷‍♂️")
-                    print("Retour au menu principal ...")
-                    time.sleep(4)
-                    return self.main_menu
+                    print(f"🍽 {product_n} - 🔗 URL: {product_n.url}")
+                    print(f"Vous pouvez l'acheter aux magasins suivants: {product_n.stores}\n")
+                    choice = input(Fore.YELLOW + "Voulez-vous enregistrer le substitue ?\n1 - Enregistrer ⭐\n2 - Quitter ❌")
+                    choice = int(choice)
+                    if not choice.isdigit():
+                        print(Fore.RED + "\n ⚠ Choix invalide ⚠")
+                        return self.product_menu
+                    elif choice == "1":
+                        return self.favorite_menu()
+                    elif choice == "2":
+                        return self.main_menu
                 
 
     def quit(self):
