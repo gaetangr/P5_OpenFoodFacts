@@ -130,9 +130,11 @@ class ProductManager(Manager):
         return saved_products
 
     def get_products_by_category(self, category):
+        """Docstring."""
         pass
 
     def get_substitutes_from_product(self, product):
+        """Docstring."""
         
         return (
             session.query(Product)...
