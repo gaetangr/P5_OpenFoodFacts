@@ -4,8 +4,6 @@ from pprint import pprint
 from sqlalchemy.orm import sessionmaker
 
 from . import engine
-from .cleaner import DataCleaner
-from .downloader import Downloader
 from .models import Category, Product, Store
 
 Session = sessionmaker(bind=engine)
@@ -121,18 +119,9 @@ class ProductManager(Manager):
         session.commit()
         return saved_products
 
-if __name__ == "__main__":
-        download = Downloader()
-        cleaner = DataCleaner()
+# Create managers as singletons
+categorymanager = CategoryManager(Category)
+storemanager = StoreManager(Store)
+productmanager = ProductManager(Product)
+# favoritemanager = FavoriteManager(Favorite)
 
-        categorymanager = CategoryManager(Category)
-        storemanager = StoreManager(Store)
-        productmanager = ProductManager(Product)
-
-        products = download.get_product(100, 10)
-
-        categories, products, stores = cleaner.clean(products)
-
-        categorymanager.save(categories)
-        storemanager.save(stores)
-        productmanager.save(products)

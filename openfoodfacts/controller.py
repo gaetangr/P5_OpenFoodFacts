@@ -25,9 +25,11 @@ class UserMenu:
     """
 
     def __init__(self):
+        """Docstring."""
         self.next = self.main_menu
 
     def start(self):
+        """Docstring."""
         self.running = True
         while self.running:
             self.next = self.next()
@@ -152,8 +154,3 @@ class UserMenu:
         else:
             return self.category_menu
 
-
-if __name__ == "__main__":
-
-    user_menu = UserMenu()
-    user_menu.start()
