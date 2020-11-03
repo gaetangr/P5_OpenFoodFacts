@@ -2,11 +2,11 @@
 
 from pprint import pprint
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.sql.expression import func
 
 from . import engine
-from .cleaner import DataCleaner
-from .downloader import Downloader
 from .models import Category, Product, Store
+from .config import display_limit
 
 Session = sessionmaker(bind=engine)
 session = Session()
@@ -78,6 +78,14 @@ class CategoryManager(Manager):
         session.commit()
         return saved_categories
 
+    def get_categories_randomly(self):
+        """Return a given number of categories chosen randomly."""
+        return (
+            session.query(Category)
+            .order_by(func.random())
+            .limit(display_limit).all()
+        )
+
 
 class ProductManager(Manager):
     """Store the products data from the api in a MySQL database."""
@@ -121,18 +129,20 @@ class ProductManager(Manager):
         session.commit()
         return saved_products
 
-if __name__ == "__main__":
-        download = Downloader()
-        cleaner = DataCleaner()
+    def get_products_by_category(self, category):
+        """Docstring."""
+        pass
 
-        categorymanager = CategoryManager(Category)
-        storemanager = StoreManager(Store)
-        productmanager = ProductManager(Product)
+    def get_substitutes_from_product(self, product):
+        """Docstring."""
+        
+        return (
+            session.query(Product)...
+        )
 
-        products = download.get_product(100, 10)
 
-        categories, products, stores = cleaner.clean(products)
-
-        categorymanager.save(categories)
-        storemanager.save(stores)
-        productmanager.save(products)
+# Create managers as singletons
+categorymanager = CategoryManager(Category)
+storemanager = StoreManager(Store)
+productmanager = ProductManager(Product)
+# favoritemanager = FavoriteManager(Favorite)

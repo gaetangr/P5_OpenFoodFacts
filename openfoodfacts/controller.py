@@ -9,6 +9,7 @@ from sqlalchemy.sql.expression import func, select
 from . import engine
 from .config import display_limit
 from .managers import Category, Product, Store, session
+from .managers import categorymanager
 
 Session = sessionmaker(bind=engine)
 session = Session()
@@ -25,9 +26,11 @@ class UserMenu:
     """
 
     def __init__(self):
+        """Docstring."""
         self.next = self.main_menu
 
     def start(self):
+        """Docstring."""
         self.running = True
         while self.running:
             self.next = self.next()
@@ -65,15 +68,16 @@ class UserMenu:
         choice = input("\nChoissisez une option:")
         return self.main_menu
 
+    def favorite_details_menu(self):
+        pass
+
     def category_menu(self):
         """Display categories for the user
 
         Returns:
             str: Return a list of choices
         """
-        category = (
-            session.query(Category).order_by(func.random()).limit(display_limit).all()
-        )
+        category = categorymanager.get_categories_randomly()
 
         print(Fore.GREEN + "\n------🍩 Catégories 🍩------\n")
         for n, category_n in enumerate(category):
@@ -140,6 +144,11 @@ class UserMenu:
                     elif choice == "2":
                         return self.main_menu
                 
+    def substitute_menu(self):
+        pass
+
+    def substitute_details_menu(self):
+        pass
 
     def quit(self):
         """Quit the menu and wave goodbye"""
@@ -152,8 +161,3 @@ class UserMenu:
         else:
             return self.category_menu
 
-
-if __name__ == "__main__":
-
-    user_menu = UserMenu()
-    user_menu.start()
