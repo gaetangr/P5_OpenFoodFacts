@@ -11,23 +11,23 @@ Base = declarative_base()
 ############## Association tables ##############
 
 product_category_table = Table(
-    'product_category',
+    "product_category",
     Base.metadata,
-    Column('product_id', BigInteger, ForeignKey('product.id')),
-    Column('category_id', Integer, ForeignKey('category.id')),
+    Column("product_id", BigInteger, ForeignKey("product.id")),
+    Column("category_id", Integer, ForeignKey("category.id")),
 )
 product_store_table = Table(
-    'product_store',
+    "product_store",
     Base.metadata,
-    Column('product_id', BigInteger, ForeignKey('product.id')),
-    Column('store_id', Integer, ForeignKey('store.id')),
+    Column("product_id", BigInteger, ForeignKey("product.id")),
+    Column("store_id", Integer, ForeignKey("store.id")),
 )
 
 
 class Product(Base):
     """Store data for products, nutriscore and url."""
 
-    __tablename__ = 'product'
+    __tablename__ = "product"
     id = Column(BigInteger, primary_key=True, autoincrement=False)
     product_name = Column(String(100))
     nutriscore_grade = Column(String(20))
@@ -43,13 +43,13 @@ class Product(Base):
 
     def __repr__(self):
         """Render Product object in a readable way."""
-        return (f"{self.product_name}")
+        return f"{self.product_name}"
 
 
 class Store(Base):
     """Store data for the store related to a product."""
 
-    __tablename__ = 'store'
+    __tablename__ = "store"
     id = Column(Integer, primary_key=True)
     store_name = Column(String(80), unique=True)
 
@@ -59,12 +59,13 @@ class Store(Base):
 
     def __repr__(self):
         """Render Store object in a readable way."""
-        return (f"{self.store_name}")
+        return f"{self.store_name}"
+
 
 class Category(Base):
     """Store data for the category related to a product."""
 
-    __tablename__ = 'category'
+    __tablename__ = "category"
     id = Column(Integer, primary_key=True)
     category_name = Column(String(400), unique=True)
 
@@ -75,5 +76,16 @@ class Category(Base):
     def __repr__(self):
         """Render Category object in a readable way."""
         return f"{self.category_name}"
+
+
+class Favorite(Base):
+    """Store data for favorite products."""
+
+    __tablename__ = "favorite"
+
+    id = Column(Integer, primary_key=True)
+    product_origin = Column(String(400), ForeignKey("product.product_name"))
+    product_sub = Column(String(400), ForeignKey("product.product_name"))
+
 
 Base.metadata.create_all(engine)

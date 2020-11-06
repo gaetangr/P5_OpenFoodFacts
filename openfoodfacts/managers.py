@@ -5,7 +5,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.sql.expression import func
 
 from . import engine
-from .models import Category, Product, Store
+from .models import Category, Product, Store, Favorite
 from .config import display_limit
 
 Session = sessionmaker(bind=engine)
@@ -51,9 +51,7 @@ class StoreManager(Manager):
     def save(self, stores):
         saved_stores = []
         for store_name in stores:
-            saved_stores.append(
-                self.get_or_create(store_name=store_name, commit=False)
-            )
+            saved_stores.append(self.get_or_create(store_name=store_name, commit=False))
         session.commit()
         return saved_stores
 
@@ -81,9 +79,7 @@ class CategoryManager(Manager):
     def get_categories_randomly(self):
         """Return a given number of categories chosen randomly."""
         return (
-            session.query(Category)
-            .order_by(func.random())
-            .limit(display_limit).all()
+            session.query(Category).order_by(func.random()).limit(display_limit).all()
         )
 
 
@@ -104,12 +100,13 @@ class ProductManager(Manager):
             product = self.get_or_create(
                 id=int(product_info.get("code")),
                 defaults={
-                    "product_name":product_info.get("product_name"),
-                    "nutriscore_grade":product_info.get("nutriscore_grade"),
-                    "url":product_info.get("url"),
-                    })
+                    "product_name": product_info.get("product_name"),
+                    "nutriscore_grade": product_info.get("nutriscore_grade"),
+                    "url": product_info.get("url"),
+                },
+            )
             saved_products.append(product)
-            for category_name in product_info['categories']:
+            for category_name in product_info["categories"]:
                 category = (
                     session.query(Category)
                     .filter_by(category_name=category_name)
@@ -117,32 +114,34 @@ class ProductManager(Manager):
                 )
                 product.categories.append(category)
 
-            for store_name in product_info['stores']:
-                store = (
-                    session.query(Store)
-                    .filter_by(store_name=store_name)
-                    .first()
-                )
+            for store_name in product_info["stores"]:
+                store = session.query(Store).filter_by(store_name=store_name).first()
                 product.stores.append(store)
 
             session.add(product)
         session.commit()
         return saved_products
 
-    def get_products_by_category(self, category):
-        """Docstring."""
-        pass
 
-    def get_substitutes_from_product(self, product):
-        """Docstring."""
-        
-        return (
-            session.query(Product)...
-        )
+class FavoriteManager(Manager):
+    """Store the favorite data from the api in a MySQL database."""
+
+    def save(self, favorites):
+        favorite_products = []
+        for product_origin in favorites:
+            favorite_products.append(
+                self.get_or_create(product_origin=product_origin, commit=False)
+            )
+        for product_sub in favorites:
+            favorite_products.append(
+                self.get_or_create(product_sub=product_sub, commit=False)
+            )
+        session.commit()
+        return favorite_products
 
 
 # Create managers as singletons
 categorymanager = CategoryManager(Category)
 storemanager = StoreManager(Store)
 productmanager = ProductManager(Product)
-# favoritemanager = FavoriteManager(Favorite)
+favoritemanager = FavoriteManager(Favorite)
