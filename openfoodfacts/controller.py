@@ -101,13 +101,22 @@ class UserMenu:
         )
         choice = input("\nChoissisez une catégorie:")
         print()
+
         if not choice.isdigit():
             print(Fore.RED + "\n ⚠ Choix invalide ⚠")
             return self.category_menu
         else:
-            choice = int(choice)
-            self.category = category[choice]
-            return self.product_menu
+            try:
+                choice = int(choice)
+                self.category = category[choice]
+                return self.product_menu
+            except IndexError as e:
+                print(
+                    Fore.RED + "⛔️ Vous avez choisi un numéro hors index",
+                    "- Erreur:",
+                    e,
+                )
+                return self.category_menu
 
     def product_menu(self):
         """Display products once for a given category
@@ -132,6 +141,7 @@ class UserMenu:
             return self.category_menu
         else:
             choice = int(choice)
+
             print(f"Vous avez choisi: {self.category.products[choice]}\n")
             for n, product_n in enumerate(self.category.products):
                 if product_n.nutriscore_grade in good_products:
@@ -144,7 +154,7 @@ class UserMenu:
                         Fore.YELLOW
                         + "Voulez-vous enregistrer le substitue ?\n1 - Enregistrer ⭐\n2 - Quitter ❌"
                     )
-                    product_fav = str(product_n)
+                    product_fav = str(f"{product_n} - 🔗 URL: {product_n.url}")
                     favoritemanager.save_favorite(product_fav)
                     if not choice.isdigit():
                         print(Fore.RED + "\n ⚠ Choix invalide ⚠")
@@ -154,12 +164,6 @@ class UserMenu:
                         return self.favorite_menu()
                     elif choice == "2":
                         return self.main_menu
-
-    def substitute_menu(self):
-        pass
-
-    def substitute_details_menu(self):
-        pass
 
     def quit(self):
         """Quit the menu and wave goodbye"""

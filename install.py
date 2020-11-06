@@ -3,6 +3,7 @@
 from openfoodfacts.managers import productmanager, categorymanager, storemanager
 from openfoodfacts.cleaner import DataCleaner
 from openfoodfacts.downloader import Downloader
+from colorama import Back, Fore, Style, init
 
 
 def main():
@@ -19,7 +20,8 @@ def main():
     storemanager.save(stores)
     productmanager.save(products)
     print(
-        "Installation terminée ✅\nPour lancer le programme, veuillez utiliser la commande: python -m openfoodfacts"
+        Fore.GREEN
+        + "Installation terminée ✅\nPour lancer le programme, veuillez utiliser la commande: python -m openfoodfacts"
     )
 
 
