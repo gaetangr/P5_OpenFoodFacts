@@ -126,18 +126,20 @@ class ProductManager(Manager):
 class FavoriteManager(Manager):
     """Store the favorite data from the api in a MySQL database."""
 
-    def save(self, favorites):
-        favorite_products = []
-        for product_origin in favorites:
-            favorite_products.append(
-                self.get_or_create(product_origin=product_origin, commit=False)
-            )
-        for product_sub in favorites:
-            favorite_products.append(
-                self.get_or_create(product_sub=product_sub, commit=False)
-            )
+    def get_products(self):
+        """Return product save from data"""
+        return session.query(Favorite).all()
+
+    def save_favorite(self, product_fav):
+        """Save given product into favorite menu
+
+        Args:
+            product_fav (string): favorite product
+            to be saved into the database
+        """
+        favorite_data = Favorite(product_sub=product_fav)
+        session.add(favorite_data)
         session.commit()
-        return favorite_products
 
 
 # Create managers as singletons

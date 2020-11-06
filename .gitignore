@@ -8,4 +8,4 @@ db/
 .gitignore
 Pipfile*
 sqlite3.db
-
+.DS_Store

@@ -9,7 +9,7 @@ from sqlalchemy.sql.expression import func, select
 from . import engine
 from .config import display_limit
 from .managers import Category, Product, Store, session
-from .managers import categorymanager
+from .managers import categorymanager, favoritemanager
 
 Session = sessionmaker(bind=engine)
 session = Session()
@@ -26,11 +26,11 @@ class UserMenu:
     """
 
     def __init__(self):
-        """Docstring."""
+        """Initialize the menu"""
         self.next = self.main_menu
 
     def start(self):
-        """Docstring."""
+        """Keep the menu running"""
         self.running = True
         while self.running:
             self.next = self.next()
@@ -64,7 +64,10 @@ class UserMenu:
         Returns:
             str: Return a list of choices
         """
+        favorite = favoritemanager.get_products()
         print(Fore.GREEN + "\n------⭐ Favoris ⭐------\n")
+        for favorite_product in favorite:
+            print(favorite_product)
         choice = input("\nChoissisez une option:")
         return self.main_menu
 
@@ -81,13 +84,13 @@ class UserMenu:
 
         print(Fore.GREEN + "\n------🍩 Catégories 🍩------\n")
         for n, category_n in enumerate(category):
-            if len(category_n.category_name) >= 31: # Truncate products if too long
+            if len(category_n.category_name) >= 31:
                 truncate = f"{category_n.category_name[:30]} (...)"
             else:
                 truncate = category_n.category_name
 
             content = f"{n} - {truncate} | ({len(category_n.products)})"
-            if len(category_n.products) > 1: # plural if more than one product in DB
+            if len(category_n.products) > 1:
                 print(f"{content} produits")
             else:
                 print(f"{content} produit")
@@ -120,12 +123,13 @@ class UserMenu:
             if product_n.nutriscore_grade in good_products:
                 rating = print(f"{content} | 👍")
             elif product_n.nutriscore_grade in bad_products:
-                rating = print(f"{content} | 👎") 
+                rating = print(f"{content} | 👎")
 
         choice = input("\nChoissisez un produit à substituer:")
+
         if not choice.isdigit():
             print(Fore.RED + "\n ⚠ Choix invalide ⚠")
-            return self.product_menu
+            return self.category_menu
         else:
             choice = int(choice)
             print(f"Vous avez choisi: {self.category.products[choice]}\n")
@@ -133,17 +137,24 @@ class UserMenu:
                 if product_n.nutriscore_grade in good_products:
                     print(Fore.GREEN + "Nous vous proposons:\n")
                     print(f"🍽 {product_n} - 🔗 URL: {product_n.url}")
-                    print(f"Vous pouvez l'acheter aux magasins suivants: {product_n.stores}\n")
-                    choice = input(Fore.YELLOW + "Voulez-vous enregistrer le substitue ?\n1 - Enregistrer ⭐\n2 - Quitter ❌")
-                    choice = int(choice)
+                    print(
+                        f"Vous pouvez l'acheter aux magasins suivants: {product_n.stores}\n"
+                    )
+                    choice = input(
+                        Fore.YELLOW
+                        + "Voulez-vous enregistrer le substitue ?\n1 - Enregistrer ⭐\n2 - Quitter ❌"
+                    )
+                    product_fav = str(product_n)
+                    favoritemanager.save_favorite(product_fav)
                     if not choice.isdigit():
                         print(Fore.RED + "\n ⚠ Choix invalide ⚠")
                         return self.product_menu
                     elif choice == "1":
+
                         return self.favorite_menu()
                     elif choice == "2":
                         return self.main_menu
-                
+
     def substitute_menu(self):
         pass
 
@@ -160,4 +171,3 @@ class UserMenu:
             self.running = False
         else:
             return self.category_menu
-

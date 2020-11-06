@@ -23,6 +23,8 @@ product_store_table = Table(
     Column("store_id", Integer, ForeignKey("store.id")),
 )
 
+################################################
+
 
 class Product(Base):
     """Store data for products, nutriscore and url."""
@@ -84,8 +86,12 @@ class Favorite(Base):
     __tablename__ = "favorite"
 
     id = Column(Integer, primary_key=True)
-    product_origin = Column(String(400), ForeignKey("product.product_name"))
-    product_sub = Column(String(400), ForeignKey("product.product_name"))
+    product_origin = Column(String(400))
+    product_sub = Column(String(400))
+
+    def __repr__(self):
+        """Render favorite object in a readable way."""
+        return f"{self.product_sub}"
 
 
 Base.metadata.create_all(engine)
