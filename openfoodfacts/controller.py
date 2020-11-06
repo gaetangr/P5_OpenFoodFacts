@@ -144,26 +144,32 @@ class UserMenu:
 
             print(f"Vous avez choisi: {self.category.products[choice]}\n")
             for n, product_n in enumerate(self.category.products):
-                if product_n.nutriscore_grade in good_products:
+                if product_n.nutriscore_grade in bad_products:
                     print(Fore.GREEN + "Nous vous proposons:\n")
-                    print(f"🍽 {product_n} - 🔗 URL: {product_n.url}")
+                    print(f"🍽  {product_n} - 🔗 URL: {product_n.url}")
                     print(
-                        f"Vous pouvez l'acheter aux magasins suivants: {product_n.stores}\n"
+                        f"\n👉Vous pouvez l'acheter aux magasins suivants: {product_n.stores}\n"
                     )
                     choice = input(
                         Fore.YELLOW
                         + "Voulez-vous enregistrer le substitue ?\n1 - Enregistrer ⭐\n2 - Quitter ❌"
                     )
-                    product_fav = str(f"{product_n} - 🔗 URL: {product_n.url}")
-                    favoritemanager.save_favorite(product_fav)
+
                     if not choice.isdigit():
                         print(Fore.RED + "\n ⚠ Choix invalide ⚠")
                         return self.product_menu
                     elif choice == "1":
-
+                        choice = int(choice)
+                        product_fav = str(f"{product_n} - 🔗 URL: {product_n.url}")
+                        favoritemanager.save_favorite(product_fav)
                         return self.favorite_menu()
                     elif choice == "2":
                         return self.main_menu
+                else:
+                    print(
+                        "🤷‍ Nous n'avons trouvé aucun substitue, il est peut-être trop bon...\n Retour au menu principal"
+                    )
+                    return self.main_menu
 
     def quit(self):
         """Quit the menu and wave goodbye"""
