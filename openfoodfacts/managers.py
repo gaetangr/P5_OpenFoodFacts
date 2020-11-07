@@ -78,9 +78,7 @@ class CategoryManager(Manager):
 
     def get_categories_randomly(self):
         """Return a given number of categories chosen randomly."""
-        return (
-            session.query(Category).order_by(func.random()).limit(display_limit).all()
-        )
+        return session.query(Category).limit(display_limit).all()
 
 
 class ProductManager(Manager):
