@@ -144,7 +144,7 @@ class UserMenu:
 
             print(f"Vous avez choisi: {self.category.products[choice]}\n")
             for n, product_n in enumerate(self.category.products):
-                if product_n.nutriscore_grade in bad_products:
+                if product_n.nutriscore_grade in good2_products:
                     print(Fore.GREEN + "Nous vous proposons:\n")
                     print(f"🍽  {product_n} - 🔗 URL: {product_n.url}")
                     print(
