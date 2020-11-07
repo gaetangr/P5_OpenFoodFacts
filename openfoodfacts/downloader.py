@@ -27,7 +27,7 @@ class Downloader:
             pages_number (int, optional): Page number to get products. Defaults to 1.
 
         Returns:
-            list: Return a list of products 
+            list: Return a list of products
         """
         products = []
         params = self.params.copy()
