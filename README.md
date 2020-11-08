@@ -1,4 +1,4 @@
-![enter image description here](https://travis-ci.com/Mcflan-7/P5_OpenFoodFacts.svg?branch=master)
+![enter image description here](https://travis-ci.com/Mcflan-7/P5_OpenFoodFacts.svg?branch=master) ![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 # ✨ OpenFoodFacts ✨
 
