@@ -1,0 +1,6 @@
+[flake8]
+max-line-length = 120
+# exclude file for my projects (Django, Flask, PY modules)
+exclude = migrations,manage.py,settings.py,.git,__pycache__,P5_grond_gaetan,install.py,requirements.txt,venv, openfoodfacts/controller.py, openfoodfacts/main.py
+# ignoring some PEP8 conventions
+ignore = E266, W503

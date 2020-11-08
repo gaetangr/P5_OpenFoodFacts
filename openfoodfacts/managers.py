@@ -1,8 +1,6 @@
 """Create data from openfoofacts."""
 
-from pprint import pprint
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.sql.expression import func
 
 from . import engine
 from .models import Category, Product, Store, Favorite

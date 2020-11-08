@@ -2,7 +2,7 @@
 
 from sqlalchemy import Column, ForeignKey, Integer, String, Table, BigInteger
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import backref, relationship
+from sqlalchemy.orm import relationship
 
 from . import engine
 

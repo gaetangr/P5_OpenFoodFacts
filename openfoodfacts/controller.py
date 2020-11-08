@@ -1,10 +1,8 @@
 """Display a menu for the user to choose a better product."""
 import time
-from pprint import pprint
 
-from colorama import Back, Fore, Style, init
+from colorama import Fore, init
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.sql.expression import func, select
 
 from . import engine
 from .config import display_limit

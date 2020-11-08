@@ -13,6 +13,4 @@ DATABASE = os.environ.get("DATABASE", "openfoodfacts")
 
 # Changing this value with increase or decrease the number of data being display on the screen..
 # ..the bigger the number the slower the program
-display_limit = 6 
-
-    
+display_limit = 6
