@@ -1,3 +1,5 @@
+![enter image description here](https://travis-ci.com/Mcflan-7/P5_OpenFoodFacts.svg?branch=master)
+
 # ✨ OpenFoodFacts ✨
 
 Program that request data from the OpenFoodFacts API, parse and store into a database for offline use, you can then search for a product within different categories and find a substitute with a better nutriscore grade.
