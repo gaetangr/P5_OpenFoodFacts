@@ -2,7 +2,6 @@ import pytest
 from openfoodfacts.cleaner import DataCleaner
 from openfoodfacts.downloader import Downloader
 
-
 downloader = Downloader()
 cleaner = DataCleaner()
 products = downloader.get_product(1, 1)
